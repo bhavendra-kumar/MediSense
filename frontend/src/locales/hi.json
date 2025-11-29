@@ -1,0 +1,62 @@
+{
+  "app_name": "मेडिसेंस एआई",
+  "nav": {
+    "home": "होम",
+    "dashboard": "डैशबोर्ड",
+    "reports": "रिपोर्ट",
+    "dermatology": "त्वचा रोग",
+    "chat": "एआई चैट",
+    "profile": "प्रोफाइल",
+    "logout": "लॉग आउट",
+    "login": "लॉगिन",
+    "register": "पंजीकरण"
+  },
+  "auth": {
+    "register": "पंजीकरण",
+    "login": "लॉगिन",
+    "firstName": "पहला नाम",
+    "lastName": "अंतिम नाम",
+    "email": "ईमेल",
+    "password": "पासवर्ड",
+    "confirmPassword": "पासवर्ड की पुष्टि करें",
+    "phone": "फोन नंबर",
+    "dateOfBirth": "जन्म तारीख",
+    "gender": "लिंग",
+    "preferredLanguage": "पसंदीदा भाषा",
+    "role": "भूमिका",
+    "patient": "रोगी",
+    "doctor": "डॉक्टर",
+    "registerButton": "पंजीकृत करें",
+    "loginButton": "लॉगिन करें",
+    "noAccount": "खाता नहीं है?",
+    "haveAccount": "पहले से खाता है?"
+  },
+  "dashboard": {
+    "title": "डैशबोर्ड",
+    "welcome": "स्वागत है",
+    "recentReports": "हाल की रिपोर्टें",
+    "recentAnalysis": "हाल का विश्लेषण",
+    "healthTrends": "स्वास्थ्य प्रवृत्तियां",
+    "upcomingReminders": "आने वाले अनुस्मारक"
+  },
+  "reports": {
+    "title": "चिकित्सा रिपोर्ट",
+    "upload": "रिपोर्ट अपलोड करें",
+    "analyze": "विश्लेषण करें",
+    "summary": "सारांश",
+    "keyFindings": "मुख्य निष्कर्ष",
+    "abnormalValues": "असामान्य मान"
+  },
+  "chat": {
+    "title": "एआई स्वास्थ्य सहायक",
+    "typeMessage": "अपना स्वास्थ्य प्रश्न लिखें...",
+    "send": "भेजें"
+  },
+  "common": {
+    "loading": "लोड हो रहा है...",
+    "error": "त्रुटि",
+    "success": "सफलता",
+    "save": "सहेजें",
+    "cancel": "रद्द करें"
+  }
+}
