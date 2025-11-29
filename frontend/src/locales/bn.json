@@ -1,0 +1,14 @@
+{
+  "app_name": "MediSense AI",
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "reports": "Reports",
+    "dermatology": "Dermatology",
+    "chat": "AI Chat",
+    "profile": "Profile",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register"
+  }
+}
