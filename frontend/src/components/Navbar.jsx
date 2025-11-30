@@ -18,7 +18,7 @@ const Navbar = () => {
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
-    setLangDropdownOpen(false);
+    setLangDropdownOpen(false)
   };
 
   const languages = [
