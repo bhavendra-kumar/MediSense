@@ -1,41 +1,17 @@
 import React, { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 
 const Navbar = () => {
-  const { i18n } = useTranslation();
   const { user, isAuthenticated, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/login');
     setDropdownOpen(false);
   };
-
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng)
-    setLangDropdownOpen(false)
-  };
-
-  const languages = [
-    { code: 'en', name: 'English', flag: '🇬🇧' },
-    { code: 'hi', name: 'हिन्दी', flag: '🇮🇳' },
-    { code: 'ta', name: 'தமிழ்', flag: '🇮🇳' },
-    { code: 'te', name: 'తెలుగు', flag: '🇮🇳' },
-    { code: 'bn', name: 'বাংলা', flag: '🇧🇩' },
-    { code: 'kn', name: 'ಕನ್ನಡ', flag: '🇮🇳' },
-    { code: 'ml', name: 'മലയാളം', flag: '🇮🇳' },
-    { code: 'pa', name: 'ਪੰਜਾਬੀ', flag: '🇮🇳' },
-    { code: 'gu', name: 'ગુજરાતી', flag: '🇮🇳' },
-    { code: 'mr', name: 'मराठी', flag: '🇮🇳' },
-    { code: 'or', name: 'ଓଡିଆ', flag: '🇮🇳' },
-  ];
-
-  const currentLang = languages.find((l) => l.code === i18n.language);
 
   return (
     <nav className="sticky top-0 z-50 bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800 text-white shadow-2xl border-b border-blue-400">
@@ -44,10 +20,10 @@ const Navbar = () => {
           {/* Logo */}
           <Link
             to="/"
-            className="flex items-center gap-2 text-2xl font-bold hover:opacity-90 transition transform hover:scale-105"
+            className="flex items-center gap-2 text-2xl font-semibold tracking-tight hover:opacity-95 transition"
           >
-            <span className="text-3xl animate-bounce">🏥</span>
-            <span className="bg-gradient-to-r from-cyan-300 to-blue-200 bg-clip-text text-transparent">
+            <span className="text-3xl">🔎</span>
+            <span className="bg-gradient-to-r from-cyan-200 via-sky-200 to-white bg-clip-text text-transparent drop-shadow-sm">
               MediSense AI
             </span>
           </Link>
@@ -55,74 +31,80 @@ const Navbar = () => {
           {/* Center Navigation */}
           {isAuthenticated && (
             <div className="hidden md:flex items-center gap-1">
-              <Link
+              <NavLink
                 to="/dashboard"
-                className="px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-500 transition duration-200 flex items-center gap-1 hover:shadow-lg"
+                onClick={() => setDropdownOpen(false)}
+                className={({ isActive }) =>
+                  `px-3 py-2 rounded-xl text-sm font-semibold flex items-center gap-1 transition duration-150 ${
+                    isActive
+                      ? 'bg-white/15 text-white shadow-lg shadow-blue-900/40'
+                      : 'text-blue-100 hover:bg-blue-500/40 hover:text-white'
+                  }`
+                }
               >
-                <span>📊</span> Dashboard
-              </Link>
-              <Link
+                <span>📊</span>
+                <span className="hidden sm:inline">Dashboard</span>
+              </NavLink>
+              <NavLink
                 to="/reports"
-                className="px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-500 transition duration-200 flex items-center gap-1 hover:shadow-lg"
+                onClick={() => setDropdownOpen(false)}
+                className={({ isActive }) =>
+                  `px-3 py-2 rounded-xl text-sm font-semibold flex items-center gap-1 transition duration-150 ${
+                    isActive
+                      ? 'bg-white/15 text-white shadow-lg shadow-blue-900/40'
+                      : 'text-blue-100 hover:bg-blue-500/40 hover:text-white'
+                  }`
+                }
               >
-                <span>📄</span> Reports
-              </Link>
-              <Link
+                <span>📄</span>
+                <span className="hidden sm:inline">Reports</span>
+              </NavLink>
+              <NavLink
                 to="/dermatology"
-                className="px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-500 transition duration-200 flex items-center gap-1 hover:shadow-lg"
+                onClick={() => setDropdownOpen(false)}
+                className={({ isActive }) =>
+                  `px-3 py-2 rounded-xl text-sm font-semibold flex items-center gap-1 transition duration-150 ${
+                    isActive
+                      ? 'bg-white/15 text-white shadow-lg shadow-blue-900/40'
+                      : 'text-blue-100 hover:bg-blue-500/40 hover:text-white'
+                  }`
+                }
               >
-                <span>🔬</span> Dermatology
-              </Link>
-              <Link
+                <span>🔬</span>
+                <span className="hidden sm:inline">Dermatology</span>
+              </NavLink>
+              <NavLink
                 to="/chat"
-                className="px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-500 transition duration-200 flex items-center gap-1 hover:shadow-lg"
+                onClick={() => setDropdownOpen(false)}
+                className={({ isActive }) =>
+                  `px-3 py-2 rounded-xl text-sm font-semibold flex items-center gap-1 transition duration-150 ${
+                    isActive
+                      ? 'bg-white/15 text-white shadow-lg shadow-blue-900/40'
+                      : 'text-blue-100 hover:bg-blue-500/40 hover:text-white'
+                  }`
+                }
               >
-                <span>💬</span> AI Chat
-              </Link>
+                <span>💬</span>
+                <span className="hidden sm:inline">AI Chat</span>
+              </NavLink>
             </div>
           )}
 
           {/* Right Section */}
           <div className="flex items-center gap-3">
-            {/* Language Selector */}
-            <div className="relative">
-              <button
-                onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                className="flex items-center gap-2 bg-blue-500 hover:bg-blue-400 px-3 py-2 rounded-lg text-sm font-medium transition duration-200 shadow-md"
-              >
-                <span>{currentLang?.flag}</span>
-                <span>{currentLang?.code.toUpperCase()}</span>
-                <span className="text-xs">▼</span>
-              </button>
-              {langDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-52 bg-white text-gray-800 rounded-lg shadow-2xl overflow-hidden z-50 border border-gray-200">
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => changeLanguage(lang.code)}
-                      className="w-full text-left px-4 py-3 hover:bg-blue-50 transition flex items-center gap-2 border-b border-gray-100 last:border-b-0"
-                    >
-                      <span className="text-lg">{lang.flag}</span>
-                      <span className="font-medium">{lang.name}</span>
-                      {i18n.language === lang.code && (
-                        <span className="ml-auto text-blue-600 font-bold text-lg">✓</span>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
             {/* User Menu */}
             {isAuthenticated ? (
               <div className="relative">
                 <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 px-3 py-2 rounded-lg transition duration-200 font-medium shadow-md"
+                  type="button"
+                  onClick={() => setDropdownOpen((open) => !open)}
+                  className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 px-3 py-2 rounded-full transition duration-150 font-semibold shadow-md border border-indigo-400/60"
                 >
                   <span className="text-lg">👤</span>
-                  <span className="hidden sm:inline text-sm">{user?.firstName}</span>
-                  <span className="text-xs">▼</span>
+                  <span className="hidden sm:inline text-sm max-w-[120px] truncate">
+                    {user?.firstName || 'Profile'}
+                  </span>
+                  <span className="text-[10px]">▾</span>
                 </button>
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-2 w-56 bg-white text-gray-800 rounded-lg shadow-2xl overflow-hidden z-50 border border-gray-200">
@@ -132,13 +114,18 @@ const Navbar = () => {
                       </p>
                       <p className="text-xs text-gray-500 truncate">{user?.email}</p>
                     </div>
-                    <Link
+                    <NavLink
                       to="/profile"
                       onClick={() => setDropdownOpen(false)}
-                      className="block px-4 py-3 hover:bg-blue-50 transition text-sm font-medium border-b border-gray-100"
+                      className={({ isActive }) =>
+                        `block px-4 py-3 text-sm font-semibold border-b border-gray-100 flex items-center gap-2 transition ${
+                          isActive ? 'bg-blue-50 text-blue-700' : 'hover:bg-blue-50'
+                        }`
+                      }
                     >
-                      ⚙️ Profile Settings
-                    </Link>
+                      <span>⚙️</span>
+                      <span>Profile settings</span>
+                    </NavLink>
                     <button
                       onClick={handleLogout}
                       className="w-full text-left px-4 py-3 hover:bg-red-50 text-red-600 transition text-sm font-medium"
@@ -152,13 +139,13 @@ const Navbar = () => {
               <div className="flex items-center gap-2">
                 <Link
                   to="/login"
-                  className="px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-500 transition duration-200"
+                  className="px-4 py-2 rounded-full text-xs font-semibold border border-blue-300/70 text-blue-50 hover:bg-blue-500/40 transition duration-150"
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="px-4 py-2 rounded-lg bg-cyan-400 text-blue-900 text-sm font-bold hover:bg-cyan-300 transition duration-200 shadow-md"
+                  className="px-4 py-2 rounded-full bg-cyan-400 text-blue-900 text-xs font-semibold hover:bg-cyan-300 transition duration-150 shadow-md shadow-cyan-500/40"
                 >
                   Sign Up
                 </Link>

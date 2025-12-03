@@ -54,6 +54,19 @@ const aiService = {
     }
   },
 
+  // ---- AI Health Score ----
+  getHealthScore: async (profile, language) => {
+    try {
+      const response = await api.post("/ai/health-score", {
+        profile,
+        language,
+      });
+      return response.data;
+    } catch (err) {
+      return { success: false, error: "Health score generation failed" };
+    }
+  },
+
   // ---- Health Tips Section ----
   getHealthTips: async (topic, language) => {
     try {

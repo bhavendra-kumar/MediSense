@@ -1,6 +1,7 @@
 const Tesseract = require('tesseract.js');
 const sharp = require('sharp');
 const PDFDocument = require('pdfjs-dist');
+// franc v6 CJS default export is a function
 const franc = require('franc');
 const logger = require('../utils/logger');
 

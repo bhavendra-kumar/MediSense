@@ -28,6 +28,7 @@ router.delete('/chat/history', authMiddleware, aiCtrl.clearHistory);
 router.post('/health-report', authMiddleware, aiCtrl.generateHealthReport);
 router.post('/summarize', authMiddleware, aiCtrl.summarizeHealthData);
 router.get('/health-tips', authMiddleware, aiCtrl.getHealthTips);
+router.post('/health-score', authMiddleware, aiCtrl.getHealthScore);
 
 // ----------- VOICE FEATURES ----------
 router.post('/stt', authMiddleware, upload.single('audio'), aiCtrl.speechToText);

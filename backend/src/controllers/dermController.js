@@ -1,6 +1,7 @@
 const DermReport = require('../models/DermReport');
 const { asyncHandler } = require('../middleware/errorHandler');
 const { analyzeImage, getCareSuggestions, determineUrgency, getSpecialistRecommendation } = require('../services/dermService');
+const { analyzeSkinCondition } = require('../services/llmService');
 const logger = require('../utils/logger');
 const path = require('path');
 
@@ -76,8 +77,23 @@ exports.analyzeImage = asyncHandler(async (req, res) => {
     try {
       const imagePath = path.join(process.cwd(), dermReport.imageUrl);
 
-      // Call dermatology analysis service
+      // Call dermatology analysis service (image-based)
       const analysisResult = await analyzeImage(imagePath);
+
+      // Call LLM-based skin analysis using user description + image findings
+      const llmContext = {
+        description: dermReport.userDescription || '',
+        bodyPart: dermReport.bodyPart || '',
+        imageFinding: {
+          diseaseDetected: analysisResult.diseaseDetected || null,
+          conditions: analysisResult.conditions || [],
+        },
+      };
+
+      const llmSkinAnalysis = await analyzeSkinCondition(
+        llmContext,
+        dermReport.userLanguage || 'en'
+      );
 
       // Get care suggestions for detected condition
       const conditionName = analysisResult.diseaseDetected?.name || 'Unknown';
@@ -94,6 +110,8 @@ exports.analyzeImage = asyncHandler(async (req, res) => {
       );
       dermReport.urgencyLevel = determineUrgency(analysisResult.diseaseDetected.severity);
       dermReport.recommendedSpecialist = getSpecialistRecommendation(conditionName);
+      // Store rich AI skin analysis
+      dermReport.skinAI = llmSkinAnalysis;
       dermReport.isProcessed = true;
       dermReport.processingStatus = 'completed';
 
@@ -111,6 +129,7 @@ exports.analyzeImage = asyncHandler(async (req, res) => {
           careSuggestions: dermReport.careSuggestions,
           urgencyLevel: dermReport.urgencyLevel,
           recommendedSpecialist: dermReport.recommendedSpecialist,
+          skinAI: dermReport.skinAI,
         },
       });
     } catch (analysisError) {

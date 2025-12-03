@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.css'
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -12,13 +12,16 @@ import Dashboard from './pages/Dashboard';
 import Reports from './pages/Reports';
 import Dermatology from './pages/Dermatology';
 import Chat from './pages/Chat';
+import Profile from './pages/Profile';
 
-const App = () => {
+const AppLayout = () => {
+  const location = useLocation();
+  const hideNavbar = location.pathname === '/login' || location.pathname === '/register';
+
   return (
-    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <AuthProvider>
-        <Navbar />
-        <Routes>
+    <>
+      {!hideNavbar && <Navbar />}
+      <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -60,16 +63,32 @@ const App = () => {
             }
           />
 
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+
           {/* Redirect to dashboard for authenticated users */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
           {/* Catch all other routes */}
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
-      </AuthProvider>
-    </Router>
+    </>
   );
 };
+
+const App = () => (
+  <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+    <AuthProvider>
+      <AppLayout />
+    </AuthProvider>
+  </Router>
+);
 
 export default App;
 

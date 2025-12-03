@@ -157,20 +157,43 @@ exports.analyzeReport = asyncHandler(async (req, res) => {
       // Generate health suggestions
       const suggestions = await generateHealthSuggestions(summary, report.userLanguage);
 
-      // Create analysis records for each test result
+      // Normalize keyFindings into embedded documents expected by Analysis model
+      const normalizedKeyFindings = (summary.keyFindings || []).map((item) => {
+        if (typeof item === 'string') {
+          return { finding: item, severity: 'medium' };
+        }
+        return {
+          finding: item.finding || item.text || '',
+          severity: item.severity || 'medium',
+        };
+      });
+
+      // Normalize recommendedTests into embedded documents expected by Analysis model
+      const normalizedRecommendedTests = (summary.recommendedTests || []).map((item) => {
+        if (typeof item === 'string') {
+          return { testName: item, reason: '', urgency: 'routine' };
+        }
+        return {
+          testName: item.testName || item.name || '',
+          reason: item.reason || item.note || '',
+          urgency: item.urgency || 'routine',
+        };
+      });
+
+      // Create analysis records for each abnormal value
       const analyses = [];
       if (summary.abnormalValues && Array.isArray(summary.abnormalValues)) {
         for (const abnormalValue of summary.abnormalValues) {
           const analysis = await Analysis.create({
             reportId: report._id,
             userId: req.user.id,
-            testName: abnormalValue.testName || 'Unknown Test',
+            testName: abnormalValue.testName || abnormalValue.name || 'Unknown Test',
             testValue: abnormalValue.value,
             status: 'abnormal',
-            interpretation: abnormalValue.interpretation || 'Requires review',
+            interpretation: abnormalValue.interpretation || abnormalValue.note || 'Requires review',
             aiSummary: summary.summary,
-            keyFindings: summary.keyFindings || [],
-            recommendedTests: summary.recommendedTests || [],
+            keyFindings: normalizedKeyFindings,
+            recommendedTests: normalizedRecommendedTests,
           });
           analyses.push(analysis);
         }

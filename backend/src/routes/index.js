@@ -6,7 +6,7 @@ const reportRoutes = require('./reportRoutes');
 const dermRoutes = require('./dermRoutes');
 const aiRoutes = require('./aiRoutes');
 
-// Mount routes
+// Mount routes (no /api here!)
 router.use('/auth', authRoutes);
 router.use('/reports', reportRoutes);
 router.use('/derm', dermRoutes);

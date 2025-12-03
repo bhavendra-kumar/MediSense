@@ -46,8 +46,12 @@ const DermReportSchema = new mongoose.Schema(
         description: String,
       },
     ],
-    aiExplanation: {
-      type: String,
+    // Structured AI explanation from LLM (Gemini)
+    skinAI: {
+      conditions: [String],
+      severity: String,
+      careRecommendations: [String],
+      urgentCareNeeded: Boolean,
     },
     careSuggestions: [
       {

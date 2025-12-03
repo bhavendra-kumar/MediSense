@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const logger = require('../utils/logger');
+const passport = require('passport');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 const JWT_EXPIRE = '7d';
@@ -286,4 +287,29 @@ exports.changePassword = async (req, res) => {
       error: error.message,
     });
   }
+};
+
+// Google OAuth: start authentication
+exports.googleAuth = passport.authenticate('google', {
+  scope: ['profile', 'email'],
+});
+
+// Google OAuth: callback handler
+exports.googleCallback = (req, res, next) => {
+  console.log('[GOOGLE] callback hit');
+  passport.authenticate('google', { session: false }, (err, user) => {
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+
+    if (err || !user) {
+      console.error('[GOOGLE] error or no user:', err);
+      return res.redirect(`${frontendUrl}/login?error=google_auth_failed`);
+    }
+
+    const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, {
+      expiresIn: JWT_EXPIRE,
+    });
+
+    console.log('[GOOGLE] issuing token for user:', user.email);
+    return res.redirect(`${frontendUrl}/login?token=${token}`);
+  })(req, res, next);
 };

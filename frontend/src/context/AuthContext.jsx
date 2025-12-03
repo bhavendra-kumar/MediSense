@@ -40,6 +40,23 @@ export const AuthProvider = ({ children }) => {
     return response;
   };
 
+  const loginWithToken = (token, userData) => {
+    if (!token) return;
+    localStorage.setItem('token', token);
+    setToken(token);
+
+    if (userData) {
+      setUser(userData);
+    } else {
+      authService
+        .getProfile()
+        .then((res) => {
+          if (res.success) setUser(res.user);
+        })
+        .catch(() => {});
+    }
+  };
+
   const register = async (userData) => {
     const response = await authService.register(userData);
     if (response.success) {
@@ -73,6 +90,7 @@ export const AuthProvider = ({ children }) => {
     register,
     updateProfile,
     logout,
+    loginWithToken,
     isAuthenticated: !!token,
   };
 

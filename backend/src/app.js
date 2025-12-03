@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const routes = require('./routes');
 const { errorHandler } = require('./middleware/errorHandler');
+const passport = require('passport');
+require('./config/passport');
 
 const app = express();
 
@@ -11,6 +13,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(process.env.UPLOAD_DIR || 'uploads'));
+app.use(passport.initialize());
 
 // Routes
 app.use('/api', routes);

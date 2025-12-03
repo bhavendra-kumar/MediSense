@@ -137,6 +137,31 @@ exports.summarizeHealthData = asyncHandler(async (req, res) => {
 });
 
 /* ---------------------------------------------
+   AI HEALTH SCORE
+--------------------------------------------- */
+const { generateHealthScore } = require('../services/llmService');
+
+exports.getHealthScore = asyncHandler(async (req, res) => {
+  const { profile, language = 'en' } = req.body;
+
+  if (!profile) {
+    return res.status(400).json({
+      success: false,
+      message: 'Health profile is required',
+    });
+  }
+
+  const score = await generateHealthScore(profile, language);
+
+  logger.info(`Health score generated for user: ${req.user.id}`);
+
+  return res.status(200).json({
+    success: true,
+    data: score,
+  });
+});
+
+/* ---------------------------------------------
    HEALTH TIPS (STATIC)
 --------------------------------------------- */
 exports.getHealthTips = asyncHandler(async (req, res) => {
